@@ -47,8 +47,8 @@ func refreshTab():
 
 func _on_Button_pressed():
 	if ($MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.text == "Launch"):
+		OS.execute(ProjectSettings.globalize_path(gameDirectory + "/" + executable), [], false)
 		refreshTab()
-		OS.execute(gameDirectory + "/" + executable, [], false)
 	else:
 		$MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.disabled = true
 		downloadUpdates()
