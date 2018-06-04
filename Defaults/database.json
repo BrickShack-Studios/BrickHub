@@ -1,0 +1,18 @@
+{
+	
+	"brickHub": {
+		"description":"[center]Welcome to the BrickHub Launcher![/center]",
+		"news": "June 4th, 2018:\n\tInitial launch of BrickHub.",
+		"databaseLink": "https://www.dropbox.com/s/ce9d5o2zccg0a0u/database.json?dl=1",
+		"files": [{},{}]
+	},
+	
+	"games": [
+	
+		{	"name":"GameGOI",
+			"description":"[center]Description[/center]\n\tA GameBoy demake of Bennet Foddy's [i]Getting Over It[/i]",
+			"news":"[center]News[/center]\nJune 4th, 2018:\n\tv0.0.1: Initial launch on BrickHub!",
+			"downloadLink":"https://www.dropbox.com/s/9f13ee3za0u0m6k/update.json?dl=1"}
+	
+	]
+}
