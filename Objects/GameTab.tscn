@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Scripts/GameTab.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Downloader.gd" type="Script" id=2]
 
 [node name="GameTab" type="Tabs"]
 
@@ -194,6 +195,16 @@ exp_edit = false
 rounded = false
 percent_visible = true
 
+[node name="Downloader" type="HTTPRequest" parent="." index="1"]
+
+download_file = ""
+use_threads = true
+body_size_limit = -1
+max_redirects = 8
+script = ExtResource( 2 )
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button" to="." method="_on_Button_pressed"]
+
+[connection signal="request_completed" from="Downloader" to="." method="_on_Downloader_request_completed"]
 
 

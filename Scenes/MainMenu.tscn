@@ -49,8 +49,6 @@ max_redirects = 8
 
 [node name="InitialUpdater" parent="." index="2" instance=ExtResource( 3 )]
 
-[connection signal="launchButtonPressed" from="TabContainer/BrickHub" to="." method="start"]
-
 [connection signal="finishedUpdate" from="InitialUpdater" to="." method="_on_InitialUpdater_finishedUpdate"]
 
 
