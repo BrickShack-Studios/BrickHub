@@ -6,7 +6,12 @@ var linksFile = ""
 onready var Hasher = load("res://Scripts/Hasher.gd").new()
 onready var jsonWrapper = load("res://Scripts/JSONParserWrapper.gd").new()
 
+var jsonTripFlag = false
+
 func _ready():
+	if (jsonTripFlag == true):
+		logger.logLine("Error: a JSON file was previously corrupted and not gracefully handled")
+	
 	$TabContainer/BrickHub/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.hide()
 	logger.logLine("Attempting to download database...")
 	var file = File.new()
@@ -42,7 +47,11 @@ func _on_InitialUpdater_finishedUpdate(response):
 	else:
 		var file = File.new()
 		file.open("user://database.tmp", File.READ)
-		if (file.get_len() > 0):
+		
+		#try parsing it to check for errors
+		var tmp = jsonWrapper.parseJSON("user://database.tmp")
+		
+		if (file.get_len() > 0 && !jsonTripFlag):
 			logger.logLine("Database downloaded successfully")
 			file.close()
 			
@@ -52,9 +61,10 @@ func _on_InitialUpdater_finishedUpdate(response):
 				dir.remove("database.json")
 			dir.rename("database.tmp", "database.json")
 		else:
+			logger.logLine("Warning: the database was not successfully downloaded. While an old cache will be used, this may be out of date. Check your internet connection.")
 			file.close()
 	
-	logger.logLine("Updated database")
+	logger.logLine("Done updating database")
 	
 	loadTabs()
 	return
