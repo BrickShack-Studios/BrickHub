@@ -3,7 +3,7 @@
 [ext_resource path="res://Scripts/GameTab.gd" type="Script" id=1]
 [ext_resource path="res://Objects/Downloader.tscn" type="PackedScene" id=2]
 
-[node name="GameTab" type="Tabs"]
+[node name="GameTab" type="Tabs" index="0"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -198,5 +198,7 @@ percent_visible = true
 [node name="Downloader" parent="." index="1" instance=ExtResource( 2 )]
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button" to="." method="_on_Button_pressed"]
+
+[connection signal="request_completed" from="Downloader" to="." method="_on_Downloader_request_completed"]
 
 

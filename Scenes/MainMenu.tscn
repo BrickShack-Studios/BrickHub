@@ -5,7 +5,7 @@
 [ext_resource path="res://Objects/GameTab.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Objects/InitialUpdater.tscn" type="PackedScene" id=4]
 
-[node name="MainMenu" type="Control" index="0"]
+[node name="MainMenu" type="Control"]
 
 anchor_left = 0.0
 anchor_top = 0.0

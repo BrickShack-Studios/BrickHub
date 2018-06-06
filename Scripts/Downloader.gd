@@ -7,7 +7,7 @@ func download(link, downloadFile):
 	if (!dir.dir_exists(downloadFile.get_base_dir())):
 		dir.make_dir_recursive(downloadFile.get_base_dir())
 	
-	logger.logLine("Downloading " + downloadFile + "...")
+	logger.logLine("Downloading " + downloadFile)
 	
 	download_file = downloadFile
 	request(link)
