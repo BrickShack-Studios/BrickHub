@@ -1,7 +1,6 @@
 extends HTTPRequest
 
-onready var logger = load("res://Scripts/Logger.gd").new()
-
+var logger = load("res://Scripts/Logger.gd").new()
 
 func download(link, downloadFile):
 	var dir = Directory.new()

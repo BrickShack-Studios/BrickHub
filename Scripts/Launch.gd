@@ -8,7 +8,25 @@ onready var jsonWrapper = load("res://Scripts/JSONParserWrapper.gd").new()
 
 var jsonTripFlag = false
 
+func checkIfAuxillary():
+	var dir = Directory.new()
+	var isAuxillary = false
+	if (dir.file_exists(OS.get_executable_path().get_base_dir() + "/u")):
+		isAuxillary = true
+
+	var args = OS.get_cmdline_args()
+	for arg in args:
+		if (arg == "--hasDir"):
+			isAuxillary = true
+	
+	if (isAuxillary):
+		get_tree().change_scene("res://Scenes/Launcher Updater.tscn")
+	
+	return
+
 func _ready():
+	checkIfAuxillary()
+	
 	if (jsonTripFlag == true):
 		logger.logLine("Error: a JSON file was previously corrupted and not gracefully handled")
 	
@@ -25,14 +43,6 @@ func _ready():
 	var json = jsonWrapper.parseJSON(jsonPath)
 	$InitialUpdater.start(json.brickHub.databaseLink, "user://database.tmp")
 	
-	return
-
-func start():
-	#var test = Hasher.hashDir("user://Test")
-	
-	#for item in test.keys():
-	#	print(str(item) + "\t:\t" + str(test[item]))
-
 	return
 
 func _on_InitialUpdater_finishedUpdate(response):
@@ -76,19 +86,29 @@ func loadTabs():
 	$TabContainer/BrickHub.initialize(	database.brickHub.description,
 										database.brickHub.news,
 										"",
-										ProjectSettings.globalize_path("res://"),
+										OS.get_executable_path().get_base_dir(),
 										database.brickHub.executable)
 	
 	for element in database.games:
-		var scene = load("res://Objects/GameTab.tscn")
-		var sceneInstance = scene.instance()
-		sceneInstance.set_name(element.name)
-		sceneInstance.initialize(	element.description,
-									element.news,
-									element.downloadLink,
-									element.gameDir,
-									element.executable)
-		$TabContainer.add_child(sceneInstance)
+		if (element.name == "BrickHub Update"):
+			var scene = load("res://Objects/AuxillaryUpdater.tscn")
+			var sceneInstance = scene.instance()
+			sceneInstance.set_name(element.name)
+			add_child(sceneInstance)
+			sceneInstance.initialize(	element.downloadLink,
+										element.gameDir,
+										element.executable)
+		else:
+			var scene = load("res://Objects/GameTab.tscn")
+			var sceneInstance = scene.instance()
+			sceneInstance.set_name(element.name)
+			sceneInstance.initialize(	element.description,
+										element.news,
+										element.downloadLink,
+										element.gameDir,
+										element.executable)
+			$TabContainer.add_child(sceneInstance)
+	
 	logger.logLine("Tabs initialized")
 	
 	return

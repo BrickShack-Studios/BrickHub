@@ -83,7 +83,6 @@ func checkForUpdates():
 		
 	return
 
-
 func _on_Downloader_request_completed(result, response_code, headers, body):
 	if (downloadingUpdates):
 		if (downloadQueue.size() == 0):
