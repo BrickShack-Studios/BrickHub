@@ -1,0 +1,13 @@
+0.0.4 (August 5th, 2018):
+	- Fixed critical bug where playing with a controller spawns new copies of the game repeatedly
+
+0.0.3 (June 10th, 2018):
+	- Added progress bar
+	- Button text is now less ambiguous
+
+0.0.2 (June 6th, 2018):
+	- Added auto-update features for the launcher itself
+		-This is backwards compatible!
+
+0.0.1 (June 4th, 2018):
+	- Initial launch of BrickHub!

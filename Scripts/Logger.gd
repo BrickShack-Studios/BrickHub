@@ -27,4 +27,4 @@ func logLine(line, silent = false):
 	
 	file.close()
 	
-	return
+	return line

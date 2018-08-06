@@ -2,6 +2,8 @@ extends Tabs
 
 signal launchButtonPressed
 
+onready var buttonNode = $MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button
+
 var hasher = load("res://Scripts/Hasher.gd").new()
 var logger = load("res://Scripts/Logger.gd").new()
 var jsonWrapper = load("res://Scripts/JSONParserWrapper.gd").new()
@@ -25,6 +27,7 @@ func initialize(d, n, u, g, e):
 	executable = e
 	
 	updateFile = gameDirectory + "/updates.json"
+	$Downloader.attachButton(buttonNode)
 	
 	var dir = Directory.new()
 	if (!dir.dir_exists(gameDirectory)):
@@ -40,23 +43,25 @@ func refreshTab():
 	
 	var file = File.new()
 	if (file.file_exists(gameDirectory + "/" + executable)):
-		$MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.text = "Check for Updates"
+		buttonNode.text = "Check for Updates"
 	else:
-		$MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.text = "Install"
+		buttonNode.text = "Install"
 	return
 
 func _on_Button_pressed():
-	if ($MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.text == "Launch"):
+	if (buttonNode.text == "Launch"):
 		OS.execute(ProjectSettings.globalize_path(gameDirectory + "/" + executable), [], false)
 		refreshTab()
 	else:
-		$MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.disabled = true
+		buttonNode.disabled = true
 		downloadUpdates()
 	
 	return
 	
 func downloadUpdates():
 	$Downloader.download(updateLink, updateFile)
+	$MarginContainer/VBoxContainer/ProgressBar.show()
+	print("Shown!")
 	return
 	
 func checkForUpdates():
@@ -69,7 +74,7 @@ func checkForUpdates():
 				localHashTable[item.path] == null ||
 				localHashTable[item.path] != item.md5):
 			
-			logger.logLine("Found update for " + item.path)
+			buttonNode.text = logger.logLine("Found update for " + item.path)
 			downloadQueue.push_front(item.link)
 			downloadQueue.push_front(item.path)
 	
@@ -78,20 +83,25 @@ func checkForUpdates():
 		$Downloader.download(downloadQueue.pop_back(), downloadQueue.pop_back())
 	else:
 		logger.logLine("No updates found")
-		$MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.text = "Launch"
-		$MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.disabled = false
-		
+		buttonNode.text = "Launch"
+		buttonNode.disabled = false
+		$MarginContainer/VBoxContainer/ProgressBar.hide()
 	return
 
 func _on_Downloader_request_completed(result, response_code, headers, body):
 	if (downloadingUpdates):
 		if (downloadQueue.size() == 0):
 			logger.logLine("Finished update")
-			$MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.text = "Launch"
-			$MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button.disabled = false
+			buttonNode.text = "Launch"
+			buttonNode.disabled = false
+			$MarginContainer/VBoxContainer/ProgressBar.hide()
 		else:
 			$Downloader.download(downloadQueue.pop_back(), downloadQueue.pop_back())
 	else:
 		downloadingUpdates = true
 		checkForUpdates()
+	return
+
+func _on_Downloader_updateProgressBar(percent):
+	$MarginContainer/VBoxContainer/ProgressBar.value = percent
 	return

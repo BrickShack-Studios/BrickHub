@@ -102,12 +102,12 @@ func loadTabs():
 			var scene = load("res://Objects/GameTab.tscn")
 			var sceneInstance = scene.instance()
 			sceneInstance.set_name(element.name)
+			$TabContainer.add_child(sceneInstance)
 			sceneInstance.initialize(	element.description,
 										element.news,
 										element.downloadLink,
 										element.gameDir,
 										element.executable)
-			$TabContainer.add_child(sceneInstance)
 	
 	logger.logLine("Tabs initialized")
 	

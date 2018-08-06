@@ -201,4 +201,6 @@ percent_visible = true
 
 [connection signal="request_completed" from="Downloader" to="." method="_on_Downloader_request_completed"]
 
+[connection signal="updateProgressBar" from="Downloader" to="." method="_on_Downloader_updateProgressBar"]
+
 

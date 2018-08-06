@@ -10,4 +10,13 @@ body_size_limit = -1
 max_redirects = 8
 script = ExtResource( 1 )
 
+[node name="UpdateTimer" type="Timer" parent="." index="0"]
+
+process_mode = 1
+wait_time = 0.1
+one_shot = true
+autostart = false
+
+[connection signal="timeout" from="UpdateTimer" to="." method="_on_UpdateTimer_timeout"]
+
 
